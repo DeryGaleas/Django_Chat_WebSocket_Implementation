@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input  id="textField" type="text">
+    <button onclick=sendMessage()>Enviar</button>
+
+    <div id="TextArea">
+        <p id="TextField"></p>
+    </div>
+
+
+    
+</body>
+<script>
+    // Se crea la conexión por websocket
+    const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+        );
+    // Cada que se recibe un mensaje se lee y se imprime en pantalla
+    chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const username = data["user"];
+            const message = data["text"];
+            const decode_message = message["message"]
+            const display_message = (username + ":" + message + "\n");
+            const actual_message =  document.querySelector('#TextField').innerText;
+            console.log(actual_message);
+             
+            document.querySelector('#TextField').innerText = actual_message + display_message;
+             
+        }
+    // Envia el texto "nuestro mensaje"
+    function sendMessage() {
+        let message = document.querySelector('#textField').value
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+    }
+</script>
+
+</html>
