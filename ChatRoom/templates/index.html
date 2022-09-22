@@ -28,12 +28,13 @@
     // Cada que se recibe un mensaje se lee y se imprime en pantalla
     chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            const username = data["user"];
-            const message = data["text"];
-            const decode_message = message["message"]
-            const display_message = (username + ":" + message + "\n");
+            console.log(data);
+            const username = data?.user;
+            const message = JSON.parse(data?.text);
+            const decoded_message = message?.message;
+            const display_message = (username + ":" + decoded_message + "\n");
             const actual_message =  document.querySelector('#TextField').innerText;
-            console.log(actual_message);
+            console.log(decoded_message);
              
             document.querySelector('#TextField').innerText = actual_message + display_message;
              
